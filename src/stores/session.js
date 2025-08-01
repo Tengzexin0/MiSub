@@ -1,24 +1,23 @@
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import { fetchInitialData, login as apiLogin } from "../lib/api";
 
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
-import { fetchInitialData, login as apiLogin } from '../lib/api';
-
-export const useSessionStore = defineStore('session', () => {
-  const sessionState = ref('loading'); // loading, loggedIn, loggedOut
-  const initialData = ref({ misubs: [], profiles: [], config: {} });
+export const useSessionStore = defineStore("session", () => {
+  const sessionState = ref("loading"); // loading, loggedIn, loggedOut
+  const initialData = ref(null);
 
   async function checkSession() {
     try {
       const data = await fetchInitialData();
       if (data) {
         initialData.value = data;
-        sessionState.value = 'loggedIn';
+        sessionState.value = "loggedIn";
       } else {
-        sessionState.value = 'loggedOut';
+        sessionState.value = "loggedOut";
       }
     } catch (error) {
       console.error("Session check failed:", error);
-      sessionState.value = 'loggedOut';
+      sessionState.value = "loggedOut";
     }
   }
 
@@ -29,21 +28,21 @@ export const useSessionStore = defineStore('session', () => {
         handleLoginSuccess();
       } else {
         const errData = await response.json();
-        throw new Error(errData.error || '登录失败');
+        throw new Error(errData.error || "登录失败");
       }
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
   }
 
   function handleLoginSuccess() {
-    sessionState.value = 'loading';
+    sessionState.value = "loading";
     checkSession();
   }
 
   async function logout() {
-    await fetch('/api/logout');
-    sessionState.value = 'loggedOut';
+    await fetch("/api/logout");
+    sessionState.value = "loggedOut";
     initialData.value = null;
   }
 

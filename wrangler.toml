@@ -1,11 +1,11 @@
-name = "misub"
+name = "mymisub"
 main = "functions/[[path]].js"
 compatibility_date = "2025-02-04"
 
 # KV 命名空间绑定
 # 这是 wrangler.toml 在Pages项目中最重要的作用
 [[kv_namespaces]]
-binding = "KV"
+binding = "MISUB_KV"
 id = "cf924ed6a93f4ea6a85431d0b51a2130" # 请确保这里是你正确的 KV ID
 preview_id = "<ID_OF_PREVIEW_KV_NAMESPACE_FOR_LOCAL_DEVELOPMENT>" # 请确保这里是你正确的预览 KV ID
 
