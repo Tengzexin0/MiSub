@@ -5,7 +5,7 @@ import { fetchInitialData, login as apiLogin } from '../lib/api';
 
 export const useSessionStore = defineStore('session', () => {
   const sessionState = ref('loading'); // loading, loggedIn, loggedOut
-  const initialData = ref(null);
+  const initialData = ref({ misubs: [], profiles: [], config: {} });
 
   async function checkSession() {
     try {
