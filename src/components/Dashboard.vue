@@ -565,8 +565,8 @@ const formattedTotalRemainingTraffic = computed(() =>
                 class="px-2.5 py-0.5 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-700/50 rounded-full"
                 >{{ subscriptions.length }}</span
               >
-              <span class="text-sm font-bold text-gray-800 dark:text-white"
-                >仅支持 base64/clash 内容 的链接</span
+              <span class="text-xs font-bold text-gray-600 dark:text-white"
+                >仅支持base64/clash内容的链接</span
               >
             </div>
             <div
@@ -643,7 +643,7 @@ const formattedTotalRemainingTraffic = computed(() =>
             <draggable
               v-if="isSortingSubs"
               tag="div"
-              class="grid grid-cols-2 md:grid-cols-4 gap-5"
+              class="grid grid-cols-2 md:grid-cols-3 gap-4"
               v-model="subscriptions"
               :item-key="(item) => item.id"
               animation="300"
@@ -663,7 +663,7 @@ const formattedTotalRemainingTraffic = computed(() =>
                 </div>
               </template>
             </draggable>
-            <div v-else class="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <div v-else class="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div
                 v-for="subscription in paginatedSubscriptions"
                 :key="subscription.id"
