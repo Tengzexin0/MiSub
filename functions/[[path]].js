@@ -1136,10 +1136,21 @@ async function generateCombinedNodeList(
           if (data && Array.isArray(data.proxies)) {
             const nodeLinks = data.proxies
               .filter(
-                (proxy) => proxy && proxy.type && proxy.server && proxy.port
-              ) // 确保关键字段存在
+                (proxy) =>
+                  proxy &&
+                  proxy.type &&
+                  proxy.server &&
+                  proxy.port &&
+                  proxy.server !== "127.0.0.1"
+              ) // 确保关键字段存在 排除无效本地地址
               .map((proxy) => {
                 const type = proxy.type.toLowerCase(); // 统一大小写
+                // 推断 servername 和 ws-opts.headers.Host
+                const inferredServername =
+                  proxy.servername ||
+                  (proxy.server.match(/^[a-zA-Z0-9.-]+$/) ? proxy.server : "");
+                const inferredHost =
+                  proxy["ws-opts"]?.headers?.Host || inferredServername;
                 if (type === "vmess") {
                   const vmessConfig = {
                     v: "2",
@@ -1163,20 +1174,43 @@ async function generateCombinedNodeList(
                     proxy.name || "unnamed"
                   )}`;
                 } else if (type === "vless") {
+                  const params = [
+                    `encryption=none`,
+                    `security=${proxy.tls ? "tls" : "none"}`,
+                    `type=${proxy.network || "tcp"}`,
+                    proxy["ws-opts"]?.path
+                      ? `path=${encodeURIComponent(proxy["ws-opts"].path)}`
+                      : "",
+                    inferredServername ? `sni=${inferredServername}` : "",
+                    proxy.alpn
+                      ? `alpn=${encodeURIComponent(proxy.alpn.join(","))}`
+                      : "",
+                    proxy["client-fingerprint"]
+                      ? `fp=${proxy["client-fingerprint"]}`
+                      : "chrome", // 默认指纹
+                    inferredHost ? `host=${inferredHost}` : "",
+                  ]
+                    .filter(Boolean)
+                    .join("&");
                   const vlessConfig = `${proxy.uuid}@${proxy.server}:${
                     proxy.port
-                  }?encryption=none&security=${
-                    proxy.tls ? "tls" : "none"
-                  }&type=${proxy.network || "tcp"}${
-                    proxy["ws-opts"]?.path
-                      ? "&path=" + encodeURIComponent(proxy["ws-opts"].path)
-                      : ""
-                  }#${encodeURIComponent(proxy.name || "unnamed")}`;
+                  }?${params}#${encodeURIComponent(proxy.name || "unnamed")}`;
                   return `vless://${vlessConfig}`;
                 } else if (type === "trojan") {
+                  const params = [
+                    inferredServername ? `sni=${inferredServername}` : "",
+                    proxy.alpn
+                      ? `alpn=${encodeURIComponent(proxy.alpn.join(","))}`
+                      : "",
+                    proxy["client-fingerprint"]
+                      ? `fp=${proxy["client-fingerprint"]}`
+                      : "chrome", // 默认指纹
+                  ]
+                    .filter(Boolean)
+                    .join("&");
                   const trojanConfig = `${proxy.password}@${proxy.server}:${
                     proxy.port
-                  }?security=${proxy.tls ? "tls" : "none"}#${encodeURIComponent(
+                  }${params ? "?" + params : ""}#${encodeURIComponent(
                     proxy.name || "unnamed"
                   )}`;
                   return `trojan://${trojanConfig}`;
@@ -1186,7 +1220,7 @@ async function generateCombinedNodeList(
                 return "";
               })
               .filter((link) => link && nodeRegex.test(link));
-            text = nodeLinks.join("\n");
+            return nodeLinks.join("\n");
           } else {
             console.warn(`no found proxies 字段: ${sub.url}`);
             return "";
@@ -1341,8 +1375,6 @@ async function generateCombinedNodeList(
           });
         }
       }
-      // [修改] 记录保留的节点数量
-      console.log(`Kept ${validNodes.length} nodes for ${sub.url}`);
 
       return config.prependSubName && sub.name
         ? validNodes.map((node) => prependNodeName(node, sub.name)).join("\n")
