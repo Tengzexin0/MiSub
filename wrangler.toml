@@ -1,13 +1,13 @@
-name = "misub"
+name = "mymisub"
 main = "functions/[[path]].js"
-compatibility_date = "2024-06-13"
+compatibility_date = "2025-02-04"
 
 # KV 命名空间绑定
 # 这是 wrangler.toml 在Pages项目中最重要的作用
 [[kv_namespaces]]
 binding = "MISUB_KV"
-id = "9796c49ed5a3405aabbbc066d4686ce3" # 请确保这里是你正确的 KV ID
-preview_id = "db1e91b764d14234b38c0a233878b040" # 请确保这里是你正确的预览 KV ID
+id = "cf924ed6a93f4ea6a85431d0b51a2130" # 请确保这里是你正确的 KV ID
+preview_id = "<ID_OF_PREVIEW_KV_NAMESPACE_FOR_LOCAL_DEVELOPMENT>" # 请确保这里是你正确的预览 KV ID
 
 # D1 数据库绑定
 # 用于替代 KV 存储，解决写入限制问题
@@ -26,4 +26,4 @@ COOKIE_SECRET = "a_very_long_random_secret_string"
 # "*/30" 表示每30分鐘
 # "0 */6 * * *" 表示每6小時
 # 根據您的需要調整 cron 表達式
-crons = ["0 */6 * * *"] 
+crons = ["0 0 * * *"] 
