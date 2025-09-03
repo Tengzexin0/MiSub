@@ -76,7 +76,7 @@ onUnmounted(() => {
       <draggable 
         v-if="isSorting" 
         tag="div" 
-        class="grid grid-cols-1 md:grid-cols-2 gap-5" 
+        class="grid grid-cols-1 md:grid-cols-3 gap-4" 
         :list="subscriptions" 
         item-key="id"
         animation="300" 
@@ -92,7 +92,7 @@ onUnmounted(() => {
           </div>
         </template>
       </draggable>
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div 
               v-for="(subscription, index) in paginatedSubscriptions"
               :key="subscription.id"
