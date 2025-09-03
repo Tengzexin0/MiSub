@@ -35,7 +35,7 @@ const emit = defineEmits(['logout']);
         
         <div v-if="isLoggedIn" class="flex items-center space-x-2 sm:space-x-3">
           <!-- PWA安装按钮 -->
-          <div class="flex-shrink-0">
+          <div class="flex-shrink-0" v-if="false">
             <PWAInstallPrompt />
           </div>
           
