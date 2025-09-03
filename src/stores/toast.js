@@ -11,7 +11,7 @@ export const useToastStore = defineStore('toast', () => {
 
   let timeoutId = null;
 
-  function showToast(message, type = 'info', duration = 3000) {
+  function showToast(message, type = 'info', duration = 1500) {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
