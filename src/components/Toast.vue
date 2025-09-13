@@ -52,7 +52,7 @@ watch(() => toast.id, () => {
         'sm:min-w-80 min-w-[calc(100vw-2rem)] sm:max-w-md max-w-[calc(100vw-2rem)]',
         'backdrop-blur-lg border border-white/20',
         'rounded-xl shadow-2xl overflow-hidden',
-        'ring-1 transition-all duration-300',
+        'ring-1 transition-all duration-100',
         toastConfig.bg,
         toastConfig.ring
       ]"
@@ -89,7 +89,7 @@ watch(() => toast.id, () => {
         <!-- 进度条 -->
         <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
           <div 
-            class="h-full bg-white/60 transition-all duration-75 ease-linear progress-bar"
+            class="h-full bg-white/60 transition-all duration-45 ease-in-out progress-bar"
             :style="{ width: '100%' }"
           ></div>
         </div>
