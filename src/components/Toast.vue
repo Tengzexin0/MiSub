@@ -37,7 +37,7 @@ watch(() => toast.id, () => {
     isVisible.value = true;
     setTimeout(() => {
       isVisible.value = false;
-    }, 4000); // 延长到4秒
+    }, 1000); // 延长到1秒
   }
 });
 </script>
