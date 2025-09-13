@@ -87,12 +87,12 @@ watch(() => toast.id, () => {
         </div>
 
         <!-- 进度条 -->
-        <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+        <!-- <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
           <div 
             class="h-full bg-white/60 transition-all duration-45 ease-in-out progress-bar"
             :style="{ width: '100%' }"
           ></div>
-        </div>
+        </div> -->
       </div>
     </div>
   </Transition>
